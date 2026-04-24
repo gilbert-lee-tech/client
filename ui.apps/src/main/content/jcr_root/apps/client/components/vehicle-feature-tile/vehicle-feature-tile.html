@@ -1,0 +1,12 @@
+<div data-sly-use.model="com.client.core.models.VehicleFeatureTile">
+  <h1>BRAND: ${model.brand}</h1>
+  <h2>${model.title}</h2>
+  <p>${model.description}</p>
+  <img src="${model.iconPath}" />
+  <a href="${model.ctaUrl}" target="${model.ctaNewWindow ? '_blank' : '_self'}"
+    >${model.ctaLabel}</a
+  >
+  <hr />
+  <p>Theme Class: ${model.themeClass}</p>
+  <p>Has CTA: ${model.hasCta}</p>
+</div>
