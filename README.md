@@ -1,124 +1,93 @@
-# Sample AEM project template
+# Multi-Brand Vehicle Feature Tile
 
-This is a project template for AEM-based applications. It is intended as a best-practice set of examples as well as a potential starting point to develop your own functionality.
+## Key Features
+* Clean Sling Model with a sensible injector strategy
+* Accessibility-first HTL (semantic HTML, justified ARIA use, correct alt handling)
+* A Granite dialog that's genuinely usable by an author
+* Brand-aware theming without per-brand component forks
+* TypeScript (not plain JS) for any client-side behavior
 
-## Modules
+### Clean Sling Model with a sensible injector strategy
+* Sling Model with annotations (@ValueMapValue)
 
-The main parts of the template are:
+### Accessibility-first HTL (semantic HTML, justified ARIA use, correct alt handling)
+* use \<header>, \<nav>, \<section>, \<article>, etc
+* use Site Audit for scanning
+* for \<img>
+    * alt="image description"
+* for \<a href>
+    * aria-label="xxxxx (opens in new tab)"
+    * rel="noopener noreferrer"
 
-* [core:](core/README.md) Java bundle containing all core functionality like OSGi services, listeners or schedulers, as well as component-related Java code such as servlets or request filters.
-* [it.tests:](it.tests/README.md) Java based integration tests
-* [ui.apps:](ui.apps/README.md) contains the /apps (and /etc) parts of the project, ie JS&CSS clientlibs, components, and templates
-* [ui.content:](ui.content/README.md) contains sample content using the components from the ui.apps
-* ui.config: contains runmode specific OSGi configs for the project
-* [ui.frontend:](ui.frontend.general/README.md) an optional dedicated front-end build mechanism (Angular, React or general Webpack project)
-* [ui.tests:](ui.tests/README.md) Cypress based UI tests (for other frameworks check [aem-test-samples](https://github.com/adobe/aem-test-samples) repository
-* all: a single content package that embeds all of the compiled modules (bundles and content packages) including any vendor dependencies
-* analyse: this module runs analysis on the project which provides additional validation for deploying into AEMaaCS
+### A Granite dialog that's genuinely usable by an author
+* author-friendly UX
+* fieldTitle and fieldDescription
+* Use Tab
+* Group similar fields in well
+* Text place holder
 
-## How to build
+### Brand-aware theming without per-brand component forks
+The brand name recognition play the major factor of the project architecture. 
+The brand name can be derived by
 
-To build all the modules run in the project root directory the following command with Maven 3:
+#### Domain name, or URL
+> #### Not a good idea. 
+> It can be re-written by CDN, or Web server. 
+>
+> Difficult for the development testing 
 
-    mvn clean install
+#### page properties
+> #### Good idea. 
+>
+> Increase the workload for the content author. The default value can be defined in the page initial content.
+>
+> Easy to mock for the development testing 
 
-To build all the modules and deploy the `all` package to a local instance of AEM, run in the project root directory the following command:
+#### Template Path
+> #### Good idea. 
+>
+> Create separated sites for each brand. Each brand has separated set of Editable Templates. Content Author pick the right template without making mistake.
+>
+> Easy to mock for the development testing 
 
-    mvn clean install -PautoInstallSinglePackage
 
-Or to deploy it to a publish instance, run
+### TypeScript (not plain JS) for any client-side behavior
+* webpack update
 
-    mvn clean install -PautoInstallSinglePackagePublish
 
-Or alternatively
+## ASSUMPTION:
+* It is a Multi Brands Site and only support one language and one region (us-en)
+* There is a master brand for default content and style
+* Each brand has it's own SITE. The blueprint is coming from the master brand.
 
-    mvn clean install -PautoInstallSinglePackage -Daem.port=4503
+## Site and Template structure
+        /conf/
+        ├── brand-a/settings/wcm/templates
+        ├── brand-b/settings/wcm/templates
+        ├── brand-c/settings/wcm/templates
+        └── brand-d/settings/wcm/templates
 
-Or to deploy only the bundle to the author, run
 
-    mvn clean install -PautoInstallBundle
+Part 2: Reusability Writeup
+In your README (max one page), briefly explain:
+1. How you'd keep four brands rendering from one component without per-brand forks
+2. Where brand-specific CSS lives (clientlib structure)
+3. What you would place in the shared core module vs. each brand's ui.apps
 
-Or to deploy only a single content package, run in the sub-module directory (i.e `ui.apps`)
+# Reusability Writeup
+There will be one core component to handle four brands without using proxy component. The brand will be derived from the Page Template path. As long as the correct  Editable Template under the correct SITE was picked, the targeted CSS style apply into the component.
 
-    mvn clean install -PautoInstallPackage
+There will be a global styles clientlibs. Each brand have it's own clientlibs. It include brand's CSS variables and styles. Also, we can assign brand clientlib into the Editable Template's policy.
 
-## Documentation
-
-The build process also generates documentation in the form of README.md files in each module directory for easy reference. Depending on the options you select at build time, the content may be customized to your project.
-
-## Testing
-
-There are three levels of testing contained in the project:
-
-### Unit tests
-
-This show-cases classic unit testing of the code contained in the bundle. To
-test, execute:
-
-    mvn clean test
-
-### Integration tests
-
-This allows running integration tests that exercise the capabilities of AEM via
-HTTP calls to its API. To run the integration tests, run:
-
-    mvn clean verify -Plocal
-
-Test classes must be saved in the `src/main/java` directory (or any of its
-subdirectories), and must be contained in files matching the pattern `*IT.java`.
-
-The configuration provides sensible defaults for a typical local installation of
-AEM. If you want to point the integration tests to different AEM author and
-publish instances, you can use the following system properties via Maven's `-D`
-flag.
-
-| Property              | Description                                         | Default value           |
-|-----------------------|-----------------------------------------------------|-------------------------|
-| `it.author.url`       | URL of the author instance                          | `http://localhost:4502` |
-| `it.author.user`      | Admin user for the author instance                  | `admin`                 |
-| `it.author.password`  | Password of the admin user for the author instance  | `admin`                 |
-| `it.publish.url`      | URL of the publish instance                         | `http://localhost:4503` |
-| `it.publish.user`     | Admin user for the publish instance                 | `admin`                 |
-| `it.publish.password` | Password of the admin user for the publish instance | `admin`                 |
-
-The integration tests in this archetype use the [AEM Testing
-Clients](https://github.com/adobe/aem-testing-clients) and showcase some
-recommended [best
-practices](https://github.com/adobe/aem-testing-clients/wiki/Best-practices) to
-be put in use when writing integration tests for AEM.
-
-## Static Analysis
-
-The `analyse` module performs static analysis on the project for deploying into AEMaaCS. It is automatically
-run when executing
-
-    mvn clean install
-
-from the project root directory. Additional information about this analysis and how to further configure it
-can be found here https://github.com/adobe/aemanalyser-maven-plugin
-
-### UI tests
-
-They will test the UI layer of your AEM application using Cypress framework.
-
-Check README file in `ui.tests` module for more details.
-
-Examples of UI tests in different frameworks can be found here: https://github.com/adobe/aem-test-samples
-
-## ClientLibs
-
-The frontend module is made available using an [AEM ClientLib](https://helpx.adobe.com/experience-manager/6-5/sites/developing/using/clientlibs.html). When executing the NPM build script, the app is built and the [`aem-clientlib-generator`](https://github.com/wcm-io-frontend/aem-clientlib-generator) package takes the resulting build output and transforms it into such a ClientLib.
-
-A ClientLib will consist of the following files and directories:
-
-- `css/`: CSS files which can be requested in the HTML
-- `css.txt` (tells AEM the order and names of files in `css/` so they can be merged)
-- `js/`: JavaScript files which can be requested in the HTML
-- `js.txt` (tells AEM the order and names of files in `js/` so they can be merged
-- `resources/`: Source maps, non-entrypoint code chunks (resulting from code splitting), static assets (e.g. icons), etc.
-
-## Maven settings
-
-The project comes with the auto-public repository configured. To setup the repository in your Maven settings, refer to:
-
-    http://helpx.adobe.com/experience-manager/kb/SetUpTheAdobeMavenRepository.html
+## Components and Clientlibs structure
+        /apps/client/
+        ├── components/
+        │   └── core/                      <-- Shared Logic & HTML
+        │       └── vehicle-feature-tile/                
+        │           ├── vehicle-feature-tile.html        <-- HTL script
+        │           └── .vehicle-feature-tile.xml        <-- component definition
+        └── clientlibs/
+            ├── clientlib-base/            <-- Global styles (reset, grid)
+            ├── clientlib-brand-a/         <-- Brand A CSS variables & overrides
+            └── clientlib-brand-b/         <-- Brand B CSS variables & overrides
+        
