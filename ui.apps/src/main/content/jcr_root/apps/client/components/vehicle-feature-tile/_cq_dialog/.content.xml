@@ -14,36 +14,41 @@
                     <title
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                        fieldLabel="Title"
+                        fieldLabel="Content | Title"
                         name="./title"/>
                     <description
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
-                        fieldLabel="Description"
+                        fieldLabel="Content | Description"
                         name="./description"/>
                     <iconPath
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-                        fieldLabel="Icon Path"
+                        fieldLabel="Link | Icon Path"
                         name="./iconPath"
                         rootPath="/content/dam"/>
                     <ctaLabel
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                        fieldLabel="CTA Label"
+                        fieldLabel="Link | CTA Label"
                         name="./ctaLabel"/>
                     <ctaUrl
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-                        fieldLabel="CTA URL"
+                        fieldLabel="Link | CTA URL"
                         name="./ctaUrl"/>
                     <ctaNewWindow
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
                         name="./ctaNewWindow"
-                        text="Open in new window"
+                        text="Link | Open in new window"
                         uncheckedValue="{Boolean}false"
                         value="{Boolean}true"/>
+                    <iconAltOverride
+                        jcr:primaryType="nt:unstructured"
+                        sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
+                        fieldLabel="Accessibility - Icon Alt Text Override"
+                        name="./iconAltOverride"/>
                 </items>
             </column>
         </items>

@@ -41,6 +41,10 @@ public class VehicleFeatureTile {
 
     @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
     @Default(values = "")
+    private String iconAltOverride;
+
+    @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
+    @Default(values = "")
     private String ctaLabel;
 
     @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
@@ -50,6 +54,9 @@ public class VehicleFeatureTile {
     @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
     @Default(booleanValues = false)
     private boolean ctaNewWindow;
+
+
+
 
     private String brand;
 
@@ -86,6 +93,16 @@ public class VehicleFeatureTile {
 
     public boolean isCtaNewWindow() {
         return ctaNewWindow;
+    }
+
+    public String getIconAlt() {
+        if (iconAltOverride != null && !iconAltOverride.isEmpty()) {
+            return iconAltOverride;
+        } else if (title != null && !title.isEmpty()) {
+            return title + " icon";
+        } else {
+            return "Feature icon";
+        }
     }
 
     public String getBrand() {
