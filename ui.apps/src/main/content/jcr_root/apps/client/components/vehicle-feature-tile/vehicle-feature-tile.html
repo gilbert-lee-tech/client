@@ -1,12 +1,35 @@
-<div data-sly-use.model="com.client.core.models.VehicleFeatureTile">
-  <h1>BRAND: ${model.brand}</h1>
-  <h2>${model.title}</h2>
-  <p>${model.description}</p>
-  <img src="${model.iconPath}" />
-  <a href="${model.ctaUrl}" target="${model.ctaNewWindow ? '_blank' : '_self'}"
-    >${model.ctaLabel}</a
+<article
+  data-sly-use.model="com.client.core.models.VehicleFeatureTile"
+  class="cmp-vehicle-feature-tile ${model.themeClass}"
+>
+  <div
+    class="cmp-vehicle-feature-tile__icon-wrapper"
+    data-sly-test="${model.iconPath}"
   >
-  <hr />
-  <p>Theme Class: ${model.themeClass}</p>
-  <p>Has CTA: ${model.hasCta}</p>
-</div>
+    <img
+      class="cmp-vehicle-feature-tile__icon"
+      src="${model.iconPath}"
+      alt="${model.iconAltOverride ? model.iconAltOverride : ''}"
+    />
+  </div>
+  <h2 class="cmp-vehicle-feature-tile__title" data-sly-test="${model.title}">
+    ${model.title}
+  </h2>
+  <p
+    class="cmp-vehicle-feature-tile__description"
+    data-sly-test="${model.description}"
+  >
+    ${model.description}
+  </p>
+
+  <div class="cmp-vehicle-feature-tile__cta" data-sly-test="${model.hasCta}">
+    <a
+      class="cmp-vehicle-feature-tile__cta-link cmp-button"
+      href="${model.ctaUrl}"
+      target="${model.ctaNewWindow ? '_blank' : '_self'}"
+      rel="${model.ctaNewWindow ? 'noopener noreferrer' : ''}"
+      aria-label="${model.ctaLabel} ${model.ctaNewWindow ? ' (opens in new tab)' : ''}"
+      >${model.ctaLabel}</a
+    >
+  </div>
+</article>
