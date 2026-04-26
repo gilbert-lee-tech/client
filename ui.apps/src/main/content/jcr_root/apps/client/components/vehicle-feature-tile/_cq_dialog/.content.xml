@@ -5,52 +5,76 @@
     sling:resourceType="cq/gui/components/authoring/dialog">
     <content
         jcr:primaryType="nt:unstructured"
-        sling:resourceType="granite/ui/components/coral/foundation/fixedcolumns">
+        sling:resourceType="granite/ui/components/coral/foundation/tabs"
+        maximized="{Boolean}true">
         <items jcr:primaryType="nt:unstructured">
-            <column
+            <content
                 jcr:primaryType="nt:unstructured"
+                jcr:title="Content"
                 sling:resourceType="granite/ui/components/coral/foundation/container">
                 <items jcr:primaryType="nt:unstructured">
                     <title
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                        fieldLabel="Content | Title"
-                        name="./title"/>
+                        fieldLabel="Title"
+                        emptyText="Enter title"
+                        name="./title"
+                        required="{Boolean}true"/>
                     <description
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/textarea"
-                        fieldLabel="Content | Description"
-                        name="./description"/>
+                        fieldLabel="Description"
+                        emptyText="Enter description"
+                        name="./description"
+                        required="{Boolean}true"/>
                     <iconPath
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-                        fieldLabel="Link | Icon Path"
+                        fieldLabel="Icon Path"
                         name="./iconPath"
-                        rootPath="/content/dam"/>
+                        rootPath="/content/dam"
+                        required="{Boolean}true"/>
+                </items>
+            </content>
+            <link
+                jcr:primaryType="nt:unstructured"
+                jcr:title="Link"
+                sling:resourceType="granite/ui/components/coral/foundation/container">
+                <items jcr:primaryType="nt:unstructured">
                     <ctaLabel
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                        fieldLabel="Link | CTA Label"
+                        fieldLabel="CTA Label"
+                        emptyText="Enter button label"
                         name="./ctaLabel"/>
                     <ctaUrl
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
-                        fieldLabel="Link | CTA URL"
+                        fieldLabel="CTA URL"
                         name="./ctaUrl"/>
                     <ctaNewWindow
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/checkbox"
                         name="./ctaNewWindow"
-                        text="Link | Open in new window"
+                        text="Open in new window"
                         uncheckedValue="{Boolean}false"
                         value="{Boolean}true"/>
+                </items>
+            </link>
+            <accessibility
+                jcr:primaryType="nt:unstructured"
+                jcr:title="Accessibility"
+                sling:resourceType="granite/ui/components/coral/foundation/container">
+                <items jcr:primaryType="nt:unstructured">
                     <iconAltOverride
                         jcr:primaryType="nt:unstructured"
                         sling:resourceType="granite/ui/components/coral/foundation/form/textfield"
-                        fieldLabel="Accessibility - Icon Alt Text Override"
+                        fieldLabel="Icon Alt Text Override"
+                        fieldDescription="Overrides the blank alt text on the icon image."
+                        emptyText="e.g. Learn more"
                         name="./iconAltOverride"/>
                 </items>
-            </column>
+            </accessibility>
         </items>
     </content>
 </jcr:root>

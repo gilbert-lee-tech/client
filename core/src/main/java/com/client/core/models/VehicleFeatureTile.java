@@ -17,7 +17,6 @@ import com.day.cq.wcm.api.PageManager;
 import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 @Model(adaptables = Resource.class)
 public class VehicleFeatureTile {
 
@@ -55,9 +54,6 @@ public class VehicleFeatureTile {
     @Default(booleanValues = false)
     private boolean ctaNewWindow;
 
-
-
-
     private String brand;
 
     @PostConstruct
@@ -93,16 +89,6 @@ public class VehicleFeatureTile {
 
     public boolean isCtaNewWindow() {
         return ctaNewWindow;
-    }
-
-    public String getIconAlt() {
-        if (iconAltOverride != null && !iconAltOverride.isEmpty()) {
-            return iconAltOverride;
-        } else if (title != null && !title.isEmpty()) {
-            return title + " icon";
-        } else {
-            return "Feature icon";
-        }
     }
 
     public String getBrand() {

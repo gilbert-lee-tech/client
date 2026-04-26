@@ -17,3 +17,15 @@
 }
 .cmp-vehicle-feature-tile__cta-link {
 }
+
+.cmp-vehicle-feature-tile__placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 1rem;
+  background-color: #f0f0f0;
+  color: #888;
+  font-size: 1.25rem;
+  border: 2px dashed #ccc;
+}
