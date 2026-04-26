@@ -1,6 +1,7 @@
 <article
   data-sly-use.model="com.client.core.models.VehicleFeatureTile"
   class="cmp-vehicle-feature-tile ${model.themeClass}"
+  data-sly-test.isComplete="${model.title && model.description && model.iconPath}"
 >
   <div
     class="cmp-vehicle-feature-tile__icon-wrapper"
@@ -33,3 +34,7 @@
     >
   </div>
 </article>
+
+<sly data-sly-test="${!isComplete}">
+  <p class="cmp-vehicle-feature-tile__placeholder">Vehicle Feature Tile</p>
+</sly>
