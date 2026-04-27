@@ -1,6 +1,8 @@
 <article
   data-sly-use.model="com.client.core.models.VehicleFeatureTile"
   class="cmp-vehicle-feature-tile ${model.themeClass}"
+  data-analytics-id="testing-vehicle-feature-tile"
+  data-cmp-is="vehicle-feature-tile"
   data-sly-test.isComplete="${model.title && model.description && model.iconPath}"
 >
   <div
@@ -13,11 +15,16 @@
       alt="${model.iconAltOverride ? model.iconAltOverride : ''}"
     />
   </div>
-  <h2 class="cmp-vehicle-feature-tile__title" data-sly-test="${model.title}">
+  <h2
+    class="cmp-vehicle-feature-tile__title"
+    data-sly-test="${model.title}"
+    data-cmp-hook-vehicle-feature-tile="title"
+  >
     ${model.title}
   </h2>
   <p
     class="cmp-vehicle-feature-tile__description"
+    data-cmp-hook-vehicle-feature-tile="description"
     data-sly-test="${model.description}"
   >
     ${model.description}
