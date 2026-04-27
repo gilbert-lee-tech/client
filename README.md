@@ -59,19 +59,14 @@ The brand name can be derived by
 
 > #### Good idea.
 >
-> Create separated sites for each brand. Each brand has separated set of Editable Templates. Content Author pick the right template without making mistake.
+> Create separated sites for each brand. Each brand has separated set of Editable Templates and Page Templates. Content Author pick the right template without making human mistake.
 >
 > Easy to mock for the development testing
-
-### TypeScript (not plain JS) for any client-side behavior
-
-- webpack update
 
 ## ASSUMPTION:
 
 - It is a Multi Brands Site and only support one language and one region (us-en)
-- There is a master brand for default content and style
-- Each brand has it's own SITE. The blueprint is coming from the master brand.
+- Each brand has it's own header, footer, style, and structure.
 
 ## Site and Template structure
 
@@ -81,7 +76,8 @@ The brand name can be derived by
         ├── brand-c/settings/wcm/templates
         └── brand-d/settings/wcm/templates
 
-Part 2: Reusability Writeup
+## Part 2: Reusability Writeup
+
 In your README (max one page), briefly explain:
 
 1. How you'd keep four brands rendering from one component without per-brand forks
@@ -90,20 +86,58 @@ In your README (max one page), briefly explain:
 
 # Reusability Writeup
 
-There will be one core component to handle four brands without using proxy component. The brand will be derived from the Page Template path. As long as the correct Editable Template under the correct SITE was picked, the targeted CSS style apply into the component.
+1.  The brand can be derived from the Page Properties (itself, or inheritedPageProperties), or from the template path (SITE name). We don't need proxy component, or per-brand forks.
+2.       └── clientlibs/
+             ├── clientlib-base/            <-- Global styles with categories 'brand.base'
+             ├── clientlib-brand-a/         <-- Brand A with categories 'brand.a', with dependencies 'brand.base'
+             ├── clientlib-brand-a/         <-- Brand B with categories 'brand.b', with dependencies 'brand.base'
+             ├── clientlib-brand-a/         <-- Brand C with categories 'brand.c', with dependencies 'brand.base'
+             └── clientlib-brand-b/         <-- Brand D with categories 'brand-d', with dependencies 'brand.base'
 
-There will be a global styles clientlibs. Each brand have it's own clientlibs. It include brand's CSS variables and styles. Also, we can assign brand clientlib into the Editable Template's policy.
+3.  We won't put it into the core module. The core module designs for sharing common logic. For the different layout and design, brand's ui.api is more ideal.
 
-## Components and Clientlibs structure
+# Bonus
 
-        /apps/client/
-        ├── components/
-        │   └── core/                      <-- Shared Logic & HTML
-        │       └── vehicle-feature-tile/
-        │           ├── vehicle-feature-tile.html        <-- HTL script
-        │           └── .vehicle-feature-tile.xml        <-- component definition
-        └── clientlibs/
-            ├── clientlib-base/            <-- Global styles (reset, grid)
-            ├── clientlib-brand-a/         <-- Brand A CSS variables & overrides
-            └── clientlib-brand-b/         <-- Brand B CSS variables & overrides
+- Headless variant: sketch a Content Fragment Model for "Vehicle Feature" and a GraphQL query to fetch all features for a given vehicle model
+  - We need an extra vehicle model for the above vehicle feature.
 
+| Field        | Label              | Type        | Required |
+| ------------ | ------------------ | ----------- | -------- |
+| model        | Model              | Single-line | yes      |
+| title        | Title              | Single-line | yes      |
+| description  | Description        | Multi-line  | yes      |
+| iconPath     | Icon Path          | Single-line | yes      |
+| ctaLabel     | CTA Label          | Single-line | no       |
+| ctaUrl       | CTA URL            | Single-line | no       |
+| ctaNewWindow | Open in new window | Boolean     | no       |
+| ctaAriaLabel | CTA Aria           | Single-line | no       |
+
+```json
+query VehicleFeatureByModel($model: String!) {
+    VehicleFeatureList(
+      filter: {
+        model: {
+          _expressions: [{ value: $model, _operator: EQUALS }]
+        }
+      }
+    ) {
+      items {
+        model
+        title
+        description
+        iconPath
+        ctaLabel
+        ctaUrl
+        ctaNewWindow
+        ctaAriaLabel
+      }
+    }
+  }
+```
+
+- Dispatcher caching: one paragraph on TTL and invalidation strategy when a feature description changes
+  - In normal case, after the feature description updated, author will publish the page. After that, the AEM author instance triggers the cache invalidation to all publish instances. We can configure the enableTTL on the dispatcher. We may decide that a TTL of 5 minutes for .html content is reasonable, but cached .js and .css files should live in the cache for 24 hours
+
+- Cloud Manager: identify two quality-gate failures this component might trip (code coverage, SonarQube, custom rules) and how you'd address them pre-merge
+  - The code coverage failures can be addressed by the Unit Tests coverage report. The report will be generated, after the developer build the project locally.
+  - The SonarQube failures can be addressed by downloading the Adobe Full SonarQube rules and install them into developer's IDE.
