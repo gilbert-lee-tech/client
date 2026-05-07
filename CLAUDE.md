@@ -80,11 +80,17 @@ The project uses a standard AEM Maven archetype structure with these key modules
 - TypeScript loader: `ts-loader` with `glob-import-loader` for pattern-based imports
 - SCSS pipeline: sass-loader → postcss (autoprefixer) → css-loader → MiniCssExtractPlugin
 
-**Component JavaScript Pattern** (see `_helloworld.js`):
+**Component JavaScript Pattern** (see `_vehicle-feature-tile.js`):
 - Self-contained IIFE preventing global scope pollution
 - Uses `data-cmp-is="component-name"` for DOM selection (not CSS selectors)
 - Initializes on DOMContentReady + MutationObserver for dynamically added components
 - Removes `data-cmp-is` after init to prevent re-initialization
+
+**Analytics Pattern** (see `_vehicle-feature-tile.js`):
+- Add `data-analytics-id` attribute to the root element in HTL
+- Use `IntersectionObserver` (threshold 0.5) inside the component constructor to fire a `CustomEvent` (`"title:viewed"`) when the element enters the viewport
+- Disconnect the observer after first fire — one-shot impression tracking
+- Bubble the event (`bubbles: true`) so a single top-level listener can aggregate all tile impressions
 
 **Client Library Generation**:
 - `aem-clientlib-generator` reads `clientlib.config.js` after webpack build
@@ -93,11 +99,12 @@ The project uses a standard AEM Maven archetype structure with these key modules
 
 ### Backend (Java/Sling Models)
 
-**Sling Model Pattern** (see `HelloWorldModel.java`):
+**Sling Model Pattern** (see `VehicleFeatureTile.java`):
 - Adaptable: `@Model(adaptables = Resource.class)`
-- Injection: `@ValueMapValue` with `InjectionStrategy.OPTIONAL` and `@Default` for safety
-- Template path extraction: `PageManager` → `getContainingPage()` → `getTemplate()` → `getPath()`
+- Injection: `@ValueMapValue` with `InjectionStrategy.OPTIONAL` and `@Default` for safety — use `@Default(booleanValues = false)` for boolean fields
+- Template path extraction: `PageManager` → `getContainingPage()` → `getTemplate()` → `getPath()` — used to derive brand from the template path via regex (`findProjectFromTemplatePath`)
 - Post-construct initialization: `@PostConstruct` method runs after field injection
+- Computed properties: derive `themeClass` (`"feature-tile--" + brand.toLowerCase()`) and `hasCta()` (both ctaLabel and ctaUrl non-empty) in the model, not in HTL
 
 **Testing Pattern**:
 - Framework: JUnit 5 (`@ExtendWith(AemContextExtension.class)`)
@@ -123,6 +130,8 @@ The project uses a standard AEM Maven archetype structure with these key modules
 
 ### Sling Models (`core/src/main/java/.../models/`)
 
+The primary custom Sling Model is `VehicleFeatureTile` (`core/src/main/java/com/client/core/models/VehicleFeatureTile.java`).
+
 Models use `@Model(adaptables = Resource.class)` and initialize via `@PostConstruct`. Standard injectors:
 
 - `@ValueMapValue` — reads JCR properties from the resource
@@ -130,7 +139,7 @@ Models use `@Model(adaptables = Resource.class)` and initialize via `@PostConstr
 - `@OSGiService` — injects OSGi services
 - `@Default` — fallback value when injection is optional
 
-HTL templates reference models with `data-sly-use.model="com.demo.core.models.ClassName"`.
+HTL templates reference models with `data-sly-use.model="com.client.core.models.ClassName"`.
 
 ### HTL Template Pattern (`ui.apps/.../components/<name>/<name>.html`)
 
@@ -142,7 +151,7 @@ Every component HTL template must follow this init pattern:
 
 ```html
 <article class="cmp-<name>"
-         data-sly-use.model="com.demo.core.models.<Name>Model"
+         data-sly-use.model="com.client.core.models.<Name>Model"
          data-sly-test.isComplete="${model.requiredField1 && model.requiredField2}"
          data-cmp-is="<name>">
 
@@ -168,7 +177,7 @@ Every component HTL template must follow this init pattern:
 ```html
 <article
   class="cmp-tile ${model.themeClass}"
-  data-sly-use.model="com.demo.core.models.TileModel"
+  data-sly-use.model="com.client.core.models.VehicleFeatureTile"
   data-sly-test.isComplete="${model.title && model.description && model.iconPath}"
   data-cmp-is="tile"
 >
@@ -214,23 +223,59 @@ Registered via `@SlingServletResourceTypes` annotation (no XML registration need
 
 ### OSGi Configuration Files (`ui.config/`)
 
-Placed under `src/main/content/jcr_root/apps/demo/osgiconfig/`:
+Placed under `src/main/content/jcr_root/apps/client/osgiconfig/`:
 
 - `config/` — applies to all run modes
 - `config.author/` — author only
 - `config.publish/` — publish only
 
-Factory configurations use tilde naming: `com.example.ServiceImpl~myname.cfg.json`.
+Factory configurations use tilde naming: `com.client.core.ServiceImpl~myname.cfg.json`.
 
 ### Component Structure (`ui.apps/`)
 
-Components live at `jcr_root/apps/demo/components/<name>/`. Each component has:
+Components live at `jcr_root/apps/client/components/<name>/`. Each component has:
 
 - `.content.xml` — declares `jcr:primaryType="cq:Component"`, `componentGroup`, and optionally `sling:resourceSuperType`
 - `<name>.html` — HTL template
 - `_cq_dialog/.content.xml` — Touch UI dialog definition
 
 The `page` component extends `core/wcm/components/page/v3/page` via `sling:resourceSuperType`.
+
+### Content Fragment Models (`ui.content/.../conf/client/settings/dam/cfm/models/`)
+
+CF models live at `ui.content/src/main/content/jcr_root/conf/client/settings/dam/cfm/models/<model-name>/.content.xml`.
+
+The project ships one model: **`vehicle-feature`** — used by the Vehicle Feature Tile component.
+
+**Fields:**
+
+| Name | Type | Required |
+|---|---|---|
+| `title` | `text-single` | yes |
+| `description` | `text-multi` (rich text) | yes |
+| `iconPath` | `reference` (content reference) | yes |
+| `ctaLabel` | `text-single` | no |
+| `ctaUrl` | `text-single` | no |
+| `iconAltOverride` | `text-single` | no |
+| `ctaNewWindow` | `boolean` | no |
+
+**Sample content fragments** live at `ui.content/.../content/dam/client/content-fragment/`:
+- `turbocharged-engine`
+- `adaptive-suspension`
+- `all-wheel-drive`
+- `hybrid-powertrain`
+
+**filter.xml rule** — the DAM filter for `/content/dam/client` uses an exclude-all + selective includes pattern. Any new subfolder under `/content/dam/client` that contains `.content.xml` files must be explicitly included:
+
+```xml
+<filter root="/content/dam/client" mode="merge">
+    <exclude pattern="/content/dam/client(/.*)?"/>
+    <include pattern="/content/dam/client/jcr:content(/.*)?"/>
+    <include pattern="/content/dam/client/content-fragment(/.*)?"/>
+    <include pattern="/content/dam/client/icons(/.*)?"/>
+    <!-- add an <include> for each new subfolder you add -->
+</filter>
+```
 
 ### Author Dialog (`ui.apps/.../components/<name>/_cq_dialog/.content.xml`)
 
@@ -381,7 +426,7 @@ Every field must include `fieldLabel`, `fieldDescription`, and `emptyText`. Mark
                         sling:resourceType="granite/ui/components/coral/foundation/form/pathfield"
                         fieldLabel="CTA URL"
                         fieldDescription="Destination page or external URL for the CTA button."
-                        emptyText="e.g. /content/demo/en/about"
+                        emptyText="e.g. /content/client/en/about"
                         name="./ctaUrl"/>
 
                     <!-- optional -->
@@ -439,8 +484,12 @@ Unit tests use **JUnit 5 + wcm.io AEM Mocks**. Always use `AppAemContext.newAemC
    - Keep the description concise (3–5 words max), lowercase, hyphens only
 3. **Push the branch to remote** immediately so it exists on origin before any work begins
 4. **Do all work on that branch** — never modify files on `main`
-5. **Stop after completing the work** — do NOT commit or push; leave that to the developer
-6. **Create a PR** using `gh pr create` with the following description format:
+5. **Validate the build** before committing — run the full Maven build and confirm it completes with no errors:
+   ```bash
+   mvn clean install -PautoInstallPackage
+   ```
+6. **Stop after completing the work** — do NOT commit or push; leave that to the developer
+7. **Create a PR** using `gh pr create` with the following description format:
 
 ```
 Fix #{issue-number}
@@ -452,7 +501,8 @@ git fetch origin
 git checkout -b issue-12-add-feature-sling-model
 git push -u origin issue-12-add-feature-sling-model
 # ... do the work ...
-npm run lint          # must pass before committing
+mvn clean install -PautoInstallPackage   # must pass before committing
+npm run lint                             # must pass before committing
 gh pr create --title "Add testimonial block" --body "Fix #12"
 ```
 
