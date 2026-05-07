@@ -476,16 +476,16 @@ Unit tests use **JUnit 5 + wcm.io AEM Mocks**. Always use `AppAemContext.newAemC
    - HTL template in `[component]/[component].html`
    - Granite dialog in `_cq_dialog/.content.xml`
 
-## Pre-Commit Checklist
+## Pre-Commit / Pre-Push Checklist
 
-**STOP. Run these before every `git commit` — no exceptions:**
+**STOP. Run these before every `git commit` AND before every `git push` — no exceptions:**
 
 ```bash
 mvn clean install -PautoInstallPackage   # must exit 0 — fix any errors first
 npm run lint                             # must pass — fix any lint errors first
 ```
 
-Do not commit if either command fails.
+Do not commit or push if either command fails.
 
 ## Git Workflow
 
@@ -495,7 +495,7 @@ Do not commit if either command fails.
    - Keep the description concise (3–5 words max), lowercase, hyphens only
 3. **Push the branch to remote** immediately so it exists on origin before any work begins
 4. **Do all work on that branch** — never modify files on `main`
-5. **Validate the build** before committing — run the full Maven build and confirm it completes with no errors:
+5. **Validate the build** before committing AND before pushing — run the full Maven build and confirm it completes with no errors:
    ```bash
    mvn clean install -PautoInstallPackage
    ```
