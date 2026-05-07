@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:dam="http://www.day.com/dam/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    jcr:isCheckedOut="{Boolean}true"
+    jcr:mixinTypes="[mix:referenceable,mix:versionable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="7c3f8e21-4a5b-4d9c-8e72-1b6a2f305d84">
+    <jcr:content
+        cq:name="turbocharged-engine"
+        cq:parentPath="/content/dam/client/content-fragment"
+        jcr:description="Forced induction technology that compresses intake air to boost engine power output."
+        jcr:lastModified="{Date}2026-05-01T09:43:03.830-07:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent"
+        jcr:title="Turbocharged Engine"
+        contentFragment="{Boolean}true"
+        lastFragmentSave="{Date}2026-05-01T09:43:03.830-07:00">
+        <data
+            cq:model="/conf/client/settings/dam/cfm/models/vehicle-feature"
+            jcr:primaryType="nt:unstructured"
+            _strucVersion="{Long}1">
+            <master
+                jcr:mixinTypes="[cq:Taggable,dam:cfVariationNode]"
+                jcr:primaryType="nt:unstructured"
+                ctaLabel_x0040_LastModified="{Date}2026-04-30T23:15:00.000-07:00"
+                ctaNewWindow="false"
+                ctaNewWindow_x0040_LastModified="{Date}2026-04-30T23:15:00.000-07:00"
+                ctaNewWindow_x0040_LastModifiedBy="admin"
+                ctaUrl_x0040_LastModified="{Date}2026-04-30T23:15:00.000-07:00"
+                description="&lt;p>Forced induction technology that compresses intake air to boost engine power output.&lt;/p>&#xa;"
+                description_x0040_ContentType="text/html"
+                description_x0040_LastModified="{Date}2026-04-30T23:15:00.000-07:00"
+                description_x0040_LastModifiedBy="admin"
+                iconAltOverride_x0040_LastModified="{Date}2026-04-30T23:15:00.000-07:00"
+                iconPath="/content/dam/client/icons/github.svg"
+                iconPath_x0040_LastModified="{Date}2026-04-30T23:15:00.000-07:00"
+                iconPath_x0040_LastModifiedBy="admin"
+                models="[model-z]"
+                models_x0040_LastModified="{Date}2026-05-01T09:43:03.811-07:00"
+                models_x0040_LastModifiedBy="admin"
+                title="Turbocharged Engine"
+                title_x0040_LastModified="{Date}2026-04-30T23:15:00.000-07:00"
+                title_x0040_LastModifiedBy="admin"/>
+        </data>
+        <indexedData jcr:primaryType="nt:unstructured">
+            <master
+                jcr:mixinTypes="[dam:IndexedFragmentData]"
+                jcr:primaryType="nt:unstructured"
+                jcr:uuid="9d4e2f73-5b6c-4e8d-9f83-2c7b3a416e95"
+                _x0040_string_x0040_model="/conf/client/settings/dam/cfm/models/vehicle-feature"
+                _x0040_stringArray_x0040_variations="[]"
+                string_x0040_ctaNewWindow="false"
+                string_x0040_description="&lt;p>Forced induction technology that compresses intake air to boost engine power output.&lt;/p>&#xa;"
+                string_x0040_title="Turbocharged Engine"
+                stringArray_x0040_models="[model-z]"/>
+        </indexedData>
+        <metadata
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"/>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>

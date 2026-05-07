@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:dam="http://www.day.com/dam/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    jcr:isCheckedOut="{Boolean}true"
+    jcr:mixinTypes="[mix:referenceable,mix:versionable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="50c02f6c-6fd2-4ba9-b107-b833c300494e">
+    <jcr:content
+        cq:name="all-wheel-drive"
+        cq:parentPath="/content/dam/client/content-fragment"
+        jcr:description="Dynamic torque control across all four wheels."
+        jcr:lastModified="{Date}2026-05-01T09:42:45.785-07:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent"
+        jcr:title="All-Wheel Drive"
+        contentFragment="{Boolean}true"
+        lastFragmentSave="{Date}2026-05-01T09:42:45.785-07:00">
+        <data
+            cq:model="/conf/client/settings/dam/cfm/models/vehicle-feature"
+            jcr:primaryType="nt:unstructured"
+            _strucVersion="{Long}1">
+            <master
+                jcr:mixinTypes="[cq:Taggable,dam:cfVariationNode]"
+                jcr:primaryType="nt:unstructured"
+                ctaLabel_x0040_LastModified="{Date}2026-04-30T23:09:00.880-07:00"
+                ctaNewWindow="false"
+                ctaNewWindow_x0040_LastModified="{Date}2026-04-30T23:09:33.585-07:00"
+                ctaNewWindow_x0040_LastModifiedBy="admin"
+                ctaUrl_x0040_LastModified="{Date}2026-04-30T23:09:00.880-07:00"
+                description="&lt;p>Dynamic torque control across all four wheels.&lt;/p>&#xa;"
+                description_x0040_ContentType="text/html"
+                description_x0040_LastModified="{Date}2026-04-30T23:09:33.583-07:00"
+                description_x0040_LastModifiedBy="admin"
+                iconAltOverride_x0040_LastModified="{Date}2026-04-30T23:09:00.880-07:00"
+                iconPath="/content/dam/client/icons/github.svg"
+                iconPath_x0040_LastModified="{Date}2026-04-30T23:09:33.584-07:00"
+                iconPath_x0040_LastModifiedBy="admin"
+                models="[model-x,model-y,model-z]"
+                models_x0040_LastModified="{Date}2026-05-01T09:42:45.765-07:00"
+                models_x0040_LastModifiedBy="admin"
+                title="All-Wheel Drive"
+                title_x0040_LastModified="{Date}2026-04-30T23:09:33.582-07:00"
+                title_x0040_LastModifiedBy="admin"/>
+        </data>
+        <indexedData jcr:primaryType="nt:unstructured">
+            <master
+                jcr:mixinTypes="[dam:IndexedFragmentData]"
+                jcr:primaryType="nt:unstructured"
+                jcr:uuid="f44e1fad-222f-4b6e-962c-e411147537f2"
+                _x0040_string_x0040_model="/conf/client/settings/dam/cfm/models/vehicle-feature"
+                _x0040_stringArray_x0040_variations="[]"
+                string_x0040_ctaNewWindow="false"
+                string_x0040_description="&lt;p>Dynamic torque control across all four wheels.&lt;/p>&#xa;"
+                string_x0040_title="All-Wheel Drive"
+                stringArray_x0040_models="[model-x,model-y,model-z]"/>
+        </indexedData>
+        <metadata
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"/>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>

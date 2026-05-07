@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jcr:root xmlns:jcr="http://www.jcp.org/jcr/1.0" xmlns:dam="http://www.day.com/dam/1.0" xmlns:nt="http://www.jcp.org/jcr/nt/1.0" xmlns:mix="http://www.jcp.org/jcr/mix/1.0" xmlns:cq="http://www.day.com/jcr/cq/1.0"
+    jcr:isCheckedOut="{Boolean}true"
+    jcr:mixinTypes="[mix:referenceable,mix:versionable]"
+    jcr:primaryType="dam:Asset"
+    jcr:uuid="40a79072-6291-492e-9d4c-2b875abf1f20">
+    <jcr:content
+        cq:name="hybrid-powertrain"
+        cq:parentPath="/content/dam/client/content-fragment"
+        jcr:description="Hybrid vehicle drivetrains transmit power to the driving wheels for hybrid vehicles"
+        jcr:lastModified="{Date}2026-05-01T09:42:55.072-07:00"
+        jcr:lastModifiedBy="admin"
+        jcr:primaryType="dam:AssetContent"
+        jcr:title="Hybrid Powertrain"
+        contentFragment="{Boolean}true"
+        lastFragmentSave="{Date}2026-05-01T09:42:55.072-07:00">
+        <data
+            cq:model="/conf/client/settings/dam/cfm/models/vehicle-feature"
+            jcr:primaryType="nt:unstructured"
+            _strucVersion="{Long}1">
+            <master
+                jcr:mixinTypes="[cq:Taggable,dam:cfVariationNode]"
+                jcr:primaryType="nt:unstructured"
+                ctaLabel_x0040_LastModified="{Date}2026-04-30T23:11:01.635-07:00"
+                ctaNewWindow="false"
+                ctaNewWindow_x0040_LastModified="{Date}2026-04-30T23:11:17.123-07:00"
+                ctaNewWindow_x0040_LastModifiedBy="admin"
+                ctaUrl_x0040_LastModified="{Date}2026-04-30T23:11:01.635-07:00"
+                description="&lt;p>Hybrid vehicle&amp;nbsp;drivetrains transmit power to the driving wheels for hybrid vehicles&lt;/p>&#xa;"
+                description_x0040_ContentType="text/html"
+                description_x0040_LastModified="{Date}2026-04-30T23:11:17.121-07:00"
+                description_x0040_LastModifiedBy="admin"
+                iconAltOverride_x0040_LastModified="{Date}2026-04-30T23:11:01.635-07:00"
+                iconPath="/content/dam/client/icons/gmail.svg"
+                iconPath_x0040_LastModified="{Date}2026-04-30T23:11:17.122-07:00"
+                iconPath_x0040_LastModifiedBy="admin"
+                models="[model-x,model-y]"
+                models_x0040_LastModified="{Date}2026-05-01T09:42:55.053-07:00"
+                models_x0040_LastModifiedBy="admin"
+                title="Hybrid Powertrain"
+                title_x0040_LastModified="{Date}2026-04-30T23:11:17.120-07:00"
+                title_x0040_LastModifiedBy="admin"/>
+        </data>
+        <indexedData jcr:primaryType="nt:unstructured">
+            <master
+                jcr:mixinTypes="[dam:IndexedFragmentData]"
+                jcr:primaryType="nt:unstructured"
+                jcr:uuid="6e25c162-a6e9-48cc-aadd-a810f4359394"
+                _x0040_string_x0040_model="/conf/client/settings/dam/cfm/models/vehicle-feature"
+                _x0040_stringArray_x0040_variations="[]"
+                string_x0040_ctaNewWindow="false"
+                string_x0040_description="&lt;p>Hybrid vehicle&amp;nbsp;drivetrains transmit power to the driving wheels for hybrid vehicles&lt;/p>&#xa;"
+                string_x0040_title="Hybrid Powertrain"
+                stringArray_x0040_models="[model-x,model-y]"/>
+        </indexedData>
+        <metadata
+            jcr:mixinTypes="[cq:Taggable]"
+            jcr:primaryType="nt:unstructured"/>
+        <related jcr:primaryType="nt:unstructured"/>
+    </jcr:content>
+</jcr:root>
