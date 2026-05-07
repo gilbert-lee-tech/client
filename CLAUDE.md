@@ -476,6 +476,17 @@ Unit tests use **JUnit 5 + wcm.io AEM Mocks**. Always use `AppAemContext.newAemC
    - HTL template in `[component]/[component].html`
    - Granite dialog in `_cq_dialog/.content.xml`
 
+## Pre-Commit Checklist
+
+**STOP. Run these before every `git commit` — no exceptions:**
+
+```bash
+mvn clean install -PautoInstallPackage   # must exit 0 — fix any errors first
+npm run lint                             # must pass — fix any lint errors first
+```
+
+Do not commit if either command fails.
+
 ## Git Workflow
 
 1. **Fetch the issue details** to understand the scope of work
