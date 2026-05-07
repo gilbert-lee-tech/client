@@ -1,5 +1,9 @@
 package com.client.core.models;
 
+import java.util.Optional;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import javax.annotation.PostConstruct;
 
 import org.apache.sling.api.resource.Resource;
@@ -7,16 +11,14 @@ import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.models.annotations.Default;
 import org.apache.sling.models.annotations.Model;
 import org.apache.sling.models.annotations.injectorspecific.InjectionStrategy;
+import org.apache.sling.models.annotations.injectorspecific.OSGiService;
 import org.apache.sling.models.annotations.injectorspecific.SlingObject;
 import org.apache.sling.models.annotations.injectorspecific.ValueMapValue;
 
-import com.day.cq.wcm.api.Template;
+import com.client.core.services.CityTempServices;
 import com.day.cq.wcm.api.Page;
 import com.day.cq.wcm.api.PageManager;
-
-import java.util.Optional;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import com.day.cq.wcm.api.Template;
 @Model(adaptables = Resource.class)
 public class VehicleFeatureTile {
 
@@ -25,6 +27,9 @@ public class VehicleFeatureTile {
 
     @SlingObject
     private ResourceResolver resourceResolver;
+
+    @OSGiService
+    private CityTempServices cityTempServices;
 
     @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
     @Default(values = "")
@@ -56,6 +61,8 @@ public class VehicleFeatureTile {
 
     private String brand;
 
+    private String currentTemperature;
+
     @PostConstruct
     protected void init() {
         PageManager pageManager = resourceResolver.adaptTo(PageManager.class);
@@ -65,6 +72,8 @@ public class VehicleFeatureTile {
                 .map(Template::getPath).orElse("");
 
         this.brand = findProjectFromTemplatePath(templatePath);
+
+        currentTemperature = cityTempServices.getCityTemp("calgary");
     }
 
     public String getTitle() {
@@ -101,6 +110,10 @@ public class VehicleFeatureTile {
 
     public boolean hasCta() {
         return ctaLabel != null && !ctaLabel.isEmpty() && ctaUrl != null && !ctaUrl.isEmpty();
+    }
+
+    public String getCurrentTemperature() {
+        return currentTemperature;
     }
 
     // Utility method to extract project name from template path
