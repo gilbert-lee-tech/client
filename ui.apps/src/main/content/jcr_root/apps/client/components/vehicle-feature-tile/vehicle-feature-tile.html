@@ -30,8 +30,10 @@
     ${model.description}
   </p>
 
-  <h3>Current Temperature</h3>
-  <p>${model.currentTemperature}</p>
+  <div data-sly-test="${model.currentTemperature}">
+    <h3>Current Temperature</h3>
+    <p>${model.currentTemperature}</p>
+  </div>
 
   <div class="cmp-vehicle-feature-tile__cta" data-sly-test="${model.hasCta}">
     <a

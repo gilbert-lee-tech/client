@@ -28,8 +28,12 @@ public class VehicleFeatureTile {
     @SlingObject
     private ResourceResolver resourceResolver;
 
-    @OSGiService
+    @OSGiService(injectionStrategy = InjectionStrategy.OPTIONAL)
     private CityTempServices cityTempServices;
+
+    @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
+    @Default(values = "")
+    private String city;
 
     @ValueMapValue(injectionStrategy=InjectionStrategy.OPTIONAL)
     @Default(values = "")
@@ -73,7 +77,9 @@ public class VehicleFeatureTile {
 
         this.brand = findProjectFromTemplatePath(templatePath);
 
-        currentTemperature = cityTempServices.getCityTemp("calgary");
+        if (cityTempServices != null) {
+            currentTemperature = cityTempServices.getCityTemp("calgary");
+        }
     }
 
     public String getTitle() {

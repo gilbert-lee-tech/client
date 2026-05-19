@@ -31,7 +31,7 @@ public class CityTempServicesImpl implements CityTempServices {
     @Override
     public String getCityTemp(String city) {
         ResourceResolver resourceResolver = resolverFactory.getThreadResourceResolver();
-        Resource cfResource = resourceResolver.getResource("/content/dam/interview/" + city);
+        Resource cfResource = resourceResolver.getResource("/content/dam/interview/weather-cf/" + city);
 
         if (cfResource != null) {
             // 2. Adapt the resource to the ContentFragment interface
@@ -39,9 +39,13 @@ public class CityTempServicesImpl implements CityTempServices {
             
             if (fragment != null) {
                 ContentElement latitudeElement = fragment.hasElement("latitude") ? fragment.getElement("latitude") : null;
-                String latitudeValue = latitudeElement.getContent();
-                
                 ContentElement longitudeElement = fragment.hasElement("longitude") ? fragment.getElement("longitude") : null;
+
+                if (latitudeElement == null || longitudeElement == null) {
+                    return null;
+                }
+
+                String latitudeValue = latitudeElement.getContent();
                 String longitudeValue = longitudeElement.getContent();
 
                 return getCurrentTemperature(latitudeValue, longitudeValue);
@@ -61,7 +65,7 @@ public class CityTempServicesImpl implements CityTempServices {
         if (weatherData != null && weatherData.has("current")) {
             JsonObject currentWeather = weatherData.getAsJsonObject("current");
             if (currentWeather.has("temperature_2m")) {
-                return currentWeather.get("temperature").getAsString();
+                return currentWeather.get("temperature_2m").getAsString();
             } else {
                 return null;
             }
@@ -72,7 +76,7 @@ public class CityTempServicesImpl implements CityTempServices {
 
     protected JsonObject fetchData(String latitude, String longitude) {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            HttpGet request = new HttpGet("https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&current_weather=true");
+            HttpGet request = new HttpGet("https://api.open-meteo.com/v1/forecast?latitude=" + latitude + "&longitude=" + longitude + "&current=temperature_2m");
 
             request.addHeader("Accept", "application/json");
 
